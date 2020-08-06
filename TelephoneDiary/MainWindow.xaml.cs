@@ -49,5 +49,35 @@ namespace TelephoneDiary
             ButtonMenuOpen.Visibility = Visibility.Visible;
             ButtonMenuClose.Visibility = Visibility.Collapsed;
         }
+
+        private void BttNew_Click(object sender, RoutedEventArgs e)
+        {
+            textbox1.Clear();
+            textbox2.Clear();
+            textbox3.Clear();
+            textbox4.Clear();
+            comboBox1.SelectedIndex = -1;
+            textbox1.Focus();
+        }
+
+        private void BttInsert_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid data = new DataGrid();
+            List<User> users = new List<User>();
+            users.Add(new User() { FirstName = "Samuel", LastName = "Johnson", Mobile = 58953265, Email = "samJohn@yahoo.fr", Category = tel.Bussiness });
+            users.Add(new User() { FirstName = "Yannick", LastName = "Simo", Mobile = 4564565, Email = "s_asyncrite@yahoo.fr", Category = 0 });
+            dgUsers.ItemsSource = users;
+            MessageBox.Show("New User inserted successfully!");
+        }
+
+        private void BttUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Update successfull !");
+        }
+
+        private void BttDelete_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("deletelSuccessfull");
+        }
     }
 }
