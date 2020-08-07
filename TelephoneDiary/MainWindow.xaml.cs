@@ -14,6 +14,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
+using System.Data.Sql;
+using System.Data.SqlClient;
+using System.Data.OleDb;
+using System.Data;
 
 namespace TelephoneDiary
 {
@@ -22,6 +26,8 @@ namespace TelephoneDiary
     /// </summary>
     public partial class MainWindow : Window
     {
+      SqlConnection con = new SqlConnection ("Data Source=.;Initial Catalog=Telephone_Adress;Integrated Security=True");
+
         public MainWindow()
         {
             InitializeComponent();
@@ -62,12 +68,40 @@ namespace TelephoneDiary
 
         private void BttInsert_Click(object sender, RoutedEventArgs e)
         {
-            DataGrid data = new DataGrid();
-            List<User> users = new List<User>();
-            users.Add(new User() { FirstName = "Samuel", LastName = "Johnson", Mobile = 58953265, Email = "samJohn@yahoo.fr", Category = tel.Bussiness });
-            users.Add(new User() { FirstName = "Yannick", LastName = "Simo", Mobile = 4564565, Email = "s_asyncrite@yahoo.fr", Category = 0 });
-            dgUsers.ItemsSource = users;
+
+            //List<User> users = new List<User>();
+            //users.Add(new User() { FirstName = "Samuel", LastName = "Johnson", Mobile = 58953265, Email = "samJohn@yahoo.fr", Category = tel.Bussiness });
+            //users.Add(new User() { FirstName = "Yannick", LastName = "Simo", Mobile = 4564565, Email = "s_asyncrite@yahoo.fr", Category = 0 });
+            //dgUsers.ItemsSource = users;
+            con.Open();
+            SqlCommand cmd = new SqlCommand(@"Insert Into Telephone_adres Values('" + textbox1.Text + "', '" + textbox2.Text + "','" + textbox3.Text + "','" + textbox4.Text + "','" + comboBox1.Text + "')", con);
+
+            cmd.ExecuteNonQuery();
+
+            //SqlDataAdapter sda = new SqlDataAdapter("select * from Telephone_Adress", con);
+            //DataTable dt = new DataTable();
+
+            //sda.Fill(dt);
+
+            con.Close();
             MessageBox.Show("New User inserted successfully!");
+            Display();
+
+        }
+
+        List<User> it = new List<User>();
+        void Display()
+        {
+            SqlDataAdapter sda = new SqlDataAdapter("select * from Telephone_adres", con);
+
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+
+            foreach  (DataRow item in dt.Rows)
+            {
+                it.Add(new User { FirstName = textbox1.Text, LastName = textbox2.Text, Mobile = textbox3.Text, Email = textbox4.Text, Category = tel.Bussiness });
+                dgUsers.ItemsSource = it;
+            }
         }
 
         private void BttUpdate_Click(object sender, RoutedEventArgs e)
